@@ -4,80 +4,17 @@ plugins {
     id 'org.jetbrains.intellij' version '0.4.9'
 
 }
-
-apply plugin: 'project-report'
-
 group 'de.genc.oemer'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
-//intellij.configureDefaultDependencies = false
 
 repositories {
     mavenCentral()
 }
 
-def sparkVersion = '2.4.3'
-
-//afterEvaluate {
-//    dependencies {
-//        compile intellij { exclude('lz4-1.3.0.jar') }
-//        compile intellij { exclude('lz4.jar') }
-//        runtime intellij { exclude('openapi.jar') }
-//    }
-//}
-afterEvaluate {
-    def mainSourseSet = sourceSets.getByName("main")
-    def mainClassPath = mainSourseSet.compileClasspath
-    def excludedJars = mainClassPath.filter { it.name == "lz4-1.3.0.jar" }
-    mainSourseSet.compileClasspath = mainClassPath - excludedJars
-}
-
-configurations.all {
-    resolutionStrategy {
-        preferProjectModules()
-    }
-}
-
-prepareSandbox {
-    copy {
-        from('src/main/resources') {
-            include '*.properties'
-        }
-        into 'build/idea-sandbox/plugins/my-first-intellij-plugin/lib/files'
-    }
-    prepareSandbox
-}
 
 dependencies {
-    implementation group: 'org.scala-lang', name: 'scala-library', version: '2.12.9'
-    implementation group: 'org.apache.spark', name: 'spark-core_2.12', version: sparkVersion
-    implementation group: 'org.apache.spark', name: 'spark-streaming_2.12', version: sparkVersion
-    implementation(group: 'org.apache.spark', name: 'spark-streaming-kafka-0-10_2.12', version: sparkVersion) {
-        exclude group: 'org.lz4', module: 'lz4-java'
-    }
-    implementation(group: 'org.apache.kafka', name: 'kafka-clients', version: '2.0.0') {
-        exclude group: 'org.lz4', module: 'lz4-java'
-    }
-    implementation group: 'org.apache.spark', name: 'spark-sql_2.12', version: sparkVersion
-    implementation(group: 'org.apache.spark', name: 'spark-sql-kafka-0-10_2.12', version: sparkVersion)
-
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.7'
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.7'
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.7'
-    implementation group: 'com.fasterxml.jackson.module', name: 'jackson-module-scala_2.12', version: '2.9.7'
-
-    testImplementation group: 'org.spockframework', name: 'spock-core', version: '1.3-groovy-2.4'
-    testImplementation group: 'com.holdenkarau', name: 'spark-testing-base_2.12', version: sparkVersion + "_0.12.0"
-
-    testImplementation group: 'org.codehaus.groovy.modules.http-builder', name: 'http-builder', version: '0.7.1'
-
-    // optional dependencies for using Spock
-//    testRuntime "org.objenesis:objenesis:3.0.1"
-    // allows mocking of classes without default constructor (together with CGLIB)
-//    testRuntime "cglib:cglib-nodep:3.2.10"
-//    testImplementation group: 'org.testcontainers', name: 'kafka', version: '1.11.3'
-//    testImplementation group: 'org.testcontainers', name: 'spock', version: '1.11.3'
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
@@ -88,8 +25,4 @@ patchPluginXml {
     changeNotes """
       Add change notes here.<br>
       <em>most HTML tags may be used</em>"""
-}
-runIde {
-    classpath += files('/Users/omer.genc/development/workspaces/my-first-intellij-plugin/src/main/resources/spark-version-info.properties')
-    classpath += files('/Users/omer.genc/development/workspaces/my-first-intellij-plugin/src/main/resources/log4j.properties')
 }
