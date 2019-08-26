@@ -21,8 +21,7 @@ public class HelloAction extends AnAction {
 
     public void actionPerformed(AnActionEvent event) {
         String classpathStr = System.getProperty("java.class.path");
-        System.out.print(classpathStr);
-        System.out.println("I am running");
+        Thread.currentThread().setContextClassLoader(org.apache.log4j.ConsoleAppender.class.getClassLoader());
         InputStream resourceStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("spark-version-info.properties");
         if (resourceStream != null) {
             System.out.println("Found the shizzle");
@@ -31,6 +30,7 @@ public class HelloAction extends AnAction {
         }
 //    Project project = event.getProject();
 //    Messages.showMessageDialog(project, "Hello world!", "Greeting", Messages.getInformationIcon());
+
 
         SparkConf sparkConf = new SparkConf()
                 .setMaster("local[*]")
