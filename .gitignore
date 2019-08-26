@@ -1,4 +1,3 @@
 build
 .gradle
 spark-warehouse
-test
