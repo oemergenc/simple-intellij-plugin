@@ -12,10 +12,10 @@ public class HelloAction extends AnAction {
 
     public void actionPerformed(AnActionEvent event) {
         String classpathStr = System.getProperty("java.class.path");
-        System.out.print(classpathStr);
+        System.out.println(classpathStr);
         InputStream resourceStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("my.properties");
         if (resourceStream != null) {
-            System.out.println("Found the fil");
+            System.out.println("Found the file");
         } else {
             System.out.println("Did not found the file");
         }
